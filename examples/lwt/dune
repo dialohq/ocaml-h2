@@ -1,6 +1,6 @@
 (executables
- (names lwt_echo_server2 lwt_https_server lwt_get lwt_post)
- (modules lwt_echo_server2 lwt_https_server lwt_get lwt_post)
+ (names lwt_echo_server2 lwt_https_server lwt_get lwt_post two_streams)
+ (modules lwt_echo_server2 lwt_https_server lwt_get lwt_post two_streams)
  (libraries h2-lwt-unix lwt.unix))
 
 (executable
