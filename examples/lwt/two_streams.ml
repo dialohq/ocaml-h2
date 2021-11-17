@@ -8,9 +8,6 @@ let connection_handler =
     let request = Reqd.request request_descriptor in
     let request_body = Reqd.request_body request_descriptor in
     let response_string = request.target in
-    let response_time =
-      3.0 /. (float_of_int @@ String.length response_string)
-    in
     let rec respond () =
       Body.schedule_read
         request_body
@@ -27,7 +24,7 @@ let connection_handler =
           let rec f () =
             Printf.eprintf "Sending: %s\n%!" response_string;
             Body.write_string response_body response_string;
-            Lwt_unix.sleep response_time >>= fun () -> f ()
+            Lwt_unix.sleep 1.0 >>= fun () -> f ()
           in
           Lwt.async (fun () -> f ()))
         ~on_read:(fun _request_data ~off:_ ~len:_ -> respond ())
