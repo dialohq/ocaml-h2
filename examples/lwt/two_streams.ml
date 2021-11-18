@@ -90,7 +90,103 @@ let () =
     Client.create_connection ~error_handler socket >>= fun connection ->
     Lwt.choose
       [ make_request connection "FOO" ()
-      ; (Lwt_unix.sleep 6.0 >>= fun () -> make_request connection "BAR" ())
+      ; (Lwt_unix.sleep 5.5 >>= fun () -> make_request connection "BAR" ())
       ]
   in
   Lwt_main.run main
+  (* 
+
+* Expected output:
+  
+Sending: FOO         
+        Receiving: FOO
+Sending: FOO
+        Receiving: FOO
+Sending: FOO
+        Receiving: FOO
+Sending: FOO
+        Receiving: FOO
+Sending: FOO
+        Receiving: FOO
+Sending: FOO
+        Receiving: FOO
+Sending: BAR
+        Receiving: BAR
+Sending: FOO
+Sending: BAR
+        Receiving: FOO
+        Receiving: BAR
+Sending: FOO
+Sending: BAR
+        Receiving: FOO
+        Receiving: BAR
+Sending: FOO
+Sending: BAR
+        Receiving: FOO
+        Receiving: BAR
+Sending: FOO
+Sending: BAR
+        Receiving: FOO
+        Receiving: BAR
+Sending: FOO
+Sending: BAR
+        Receiving: FOO
+        Receiving: BAR
+
+        (etc.)
+
+----------------------
+
+* Actual output:
+  
+Sending: FOO         
+        Receiving: FOO
+Sending: FOO
+        Receiving: FOO
+Sending: FOO
+        Receiving: FOO
+Sending: FOO
+        Receiving: FOO
+Sending: FOO
+        Receiving: FOO
+Sending: FOO
+        Receiving: FOO
+Sending: BAR
+        Receiving: BAR
+Sending: FOO
+Sending: BAR
+        Receiving: BAR
+Sending: FOO
+Sending: BAR
+        Receiving: BAR
+Sending: FOO
+Sending: BAR
+        Receiving: BAR
+Sending: FOO
+Sending: BAR
+        Receiving: BAR
+Sending: FOO
+Sending: BAR
+        Receiving: BAR
+        Receiving: FOOFOOFOOFOOFOO
+Sending: FOO
+Sending: BAR
+        Receiving: BAR
+Sending: FOO
+Sending: BAR
+        Receiving: BAR
+Sending: FOO
+Sending: BAR
+        Receiving: BAR
+Sending: FOO
+Sending: BAR
+        Receiving: BAR
+Sending: FOO
+Sending: BAR
+        Receiving: BAR
+        Receiving: FOOFOOFOOFOOFOO
+
+        (etc.)
+  
+  *)
+  [@@ocamlformat "wrap-comments=false"]
